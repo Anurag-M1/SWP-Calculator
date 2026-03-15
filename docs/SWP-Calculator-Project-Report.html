@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SWP Calculator Project Report</title>
+  <style>
+    :root {
+      --navy: #17345f;
+      --blue: #224c87;
+      --sky: #eaf1fb;
+      --ink: #1f2937;
+      --muted: #5b6678;
+      --line: #d8e0ec;
+      --gold: #d79d2f;
+      --green: #1f8a5b;
+      --red: #c0392b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Aptos", "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: #f5f7fb;
+      line-height: 1.55;
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      background: white;
+      padding: 20mm 18mm;
+    }
+
+    .cover {
+      background:
+        radial-gradient(circle at top right, rgba(215, 157, 47, 0.12), transparent 28%),
+        linear-gradient(135deg, #17345f 0%, #224c87 55%, #3f74b8 100%);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover::before,
+    .cover::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      filter: blur(8px);
+    }
+
+    .cover::before {
+      width: 160mm;
+      height: 160mm;
+      right: -40mm;
+      top: -30mm;
+    }
+
+    .cover::after {
+      width: 120mm;
+      height: 120mm;
+      left: -20mm;
+      bottom: -30mm;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 10px;
+    }
+
+    h1 {
+      font-size: 30pt;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: 18pt;
+      color: var(--navy);
+      margin-top: 18px;
+      border-bottom: 2px solid var(--sky);
+      padding-bottom: 6px;
+    }
+
+    h3 {
+      font-size: 12.5pt;
+      color: var(--blue);
+      margin-top: 14px;
+    }
+
+    p {
+      margin: 0 0 10px;
+      font-size: 10.5pt;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 6px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 999px;
+      font-size: 9pt;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .subtitle {
+      font-size: 14pt;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 130mm;
+      margin-top: 12px;
+    }
+
+    .meta {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      max-width: 120mm;
+    }
+
+    .meta-card {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .meta-label {
+      font-size: 8.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.78;
+      margin-bottom: 4px;
+    }
+
+    .meta-value {
+      font-size: 12pt;
+      font-weight: 700;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 16px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px 16px;
+      background: white;
+    }
+
+    .card.tint {
+      background: linear-gradient(180deg, #f9fbff 0%, #f1f6fd 100%);
+    }
+
+    ul {
+      margin: 8px 0 0 18px;
+      padding: 0;
+      font-size: 10.5pt;
+    }
+
+    li {
+      margin: 0 0 7px;
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .kpi {
+      border-radius: 16px;
+      padding: 12px;
+      color: white;
+    }
+
+    .kpi h3 {
+      color: white;
+      font-size: 9pt;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin: 0 0 6px;
+    }
+
+    .kpi p {
+      font-size: 14pt;
+      font-weight: 800;
+      margin: 0;
+    }
+
+    .navy { background: #224c87; }
+    .green { background: #1f8a5b; }
+    .gold { background: #d79d2f; }
+    .violet { background: #6e56cf; }
+
+    .formula {
+      font-family: "Menlo", "Consolas", monospace;
+      font-size: 11pt;
+      background: #f7f9fc;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin: 10px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 9.5pt;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 8px 9px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eff4fb;
+      color: var(--navy);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .pill {
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: #f4f7fb;
+      border: 1px solid var(--line);
+      font-size: 9pt;
+    }
+
+    .footer-note {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border-left: 4px solid var(--red);
+      background: #fff6f4;
+      font-size: 9.5pt;
+      color: #5c3a35;
+    }
+
+    .small {
+      font-size: 9.5pt;
+      color: var(--muted);
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .page {
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="page cover">
+    <div class="eyebrow">FinCal Innovation Hackathon · Technex '26</div>
+    <h1>SWP Calculator</h1>
+    <p class="subtitle">
+      Project report for an interactive Systematic Withdrawal Plan calculator built to help users estimate corpus longevity, remaining balance, and the impact of inflation-adjusted withdrawals.
+    </p>
+
+    <div class="meta">
+      <div class="meta-card">
+        <div class="meta-label">Technology</div>
+        <div class="meta-value">Next.js 16 + React 19</div>
+      </div>
+      <div class="meta-card">
+        <div class="meta-label">Core Purpose</div>
+        <div class="meta-value">Investor education</div>
+      </div>
+      <div class="meta-card">
+        <div class="meta-label">Modes</div>
+        <div class="meta-value">Duration and Balance</div>
+      </div>
+      <div class="meta-card">
+        <div class="meta-label">Prepared On</div>
+        <div class="meta-value">15 March 2026</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>1. Project Summary</h2>
+    <p>
+      The SWP Calculator is a web-based financial planning tool that models monthly withdrawals from an investment corpus. It is designed to make withdrawal planning easier to understand through instant calculation, visual feedback, and a structured yearly breakdown.
+    </p>
+    <p>
+      The application focuses on clarity and educational value. Users can experiment with different corpus sizes, withdrawal amounts, expected returns, and inflation assumptions to see how quickly a corpus may deplete or how much balance may remain after a chosen period.
+    </p>
+
+    <div class="kpis">
+      <div class="kpi navy">
+        <h3>Simulation Horizon</h3>
+        <p>40 Years</p>
+      </div>
+      <div class="kpi green">
+        <h3>Calculation Style</h3>
+        <p>Monthly</p>
+      </div>
+      <div class="kpi gold">
+        <h3>Result Views</h3>
+        <p>KPIs + Chart</p>
+      </div>
+      <div class="kpi violet">
+        <h3>Validation</h3>
+        <p>Jest Tests</p>
+      </div>
+    </div>
+
+    <h2>2. Objectives</h2>
+    <ul>
+      <li>Estimate how long a withdrawal plan can sustain a starting corpus.</li>
+      <li>Show the remaining corpus after a user-selected investment period.</li>
+      <li>Explain the effect of return assumptions and inflation step-up on withdrawals.</li>
+      <li>Present results in a format that is simple, visual, and suitable for investor awareness.</li>
+    </ul>
+
+    <h2>3. Core Features</h2>
+    <div class="grid-2">
+      <div class="card tint">
+        <h3>Functional Features</h3>
+        <ul>
+          <li>Interactive sliders for corpus, withdrawal, annual return, and target years.</li>
+          <li>Dual operating modes: corpus duration and target-year balance.</li>
+          <li>Optional inflation-adjusted step-up in annual withdrawals.</li>
+          <li>Automatic depletion detection with alert messaging.</li>
+          <li>Year-by-year aggregation of start balance, withdrawals, returns, and end balance.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>User Experience Features</h3>
+        <ul>
+          <li>Sticky header with clear mode switch.</li>
+          <li>Live KPI cards for key outcomes.</li>
+          <li>Corpus trend chart with cumulative withdrawal line.</li>
+          <li>Indian-number formatting for easier reading.</li>
+          <li>Assumptions and disclaimer sections for context.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>4. Financial Logic</h2>
+    <p>
+      The main financial engine is implemented as pure TypeScript logic, which keeps it independent from the UI and easy to test.
+    </p>
+    <div class="formula">Monthly rate r = annualReturn / 100 / 12</div>
+    <p>
+      For each simulated month, the current balance first earns monthly return and then the withdrawal is applied. When inflation step-up is enabled, the withdrawal amount increases once every 12 months by the configured inflation percentage.
+    </p>
+    <div class="formula">balance = balance + (balance × r) - withdrawal</div>
+    <p>
+      If the balance is insufficient to fund the next withdrawal, the engine records the exact depletion month, withdraws the remaining amount, and stops the simulation.
+    </p>
+  </section>
+
+  <section class="page page-break">
+    <h2>5. Input Model</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Input</th>
+          <th>Description</th>
+          <th>Range / Default</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Initial Corpus</td>
+          <td>Starting investment amount used for withdrawal simulation.</td>
+          <td>₹1,00,000 to ₹1,00,00,000, default ₹25,00,000</td>
+        </tr>
+        <tr>
+          <td>Monthly Withdrawal</td>
+          <td>Amount withdrawn from the corpus every month.</td>
+          <td>₹1,000 to ₹2,00,000, default ₹15,000</td>
+        </tr>
+        <tr>
+          <td>Expected Annual Return</td>
+          <td>Assumed annual return converted into a monthly growth rate.</td>
+          <td>0% to 20%, default 8%</td>
+        </tr>
+        <tr>
+          <td>Inflation Step-Up</td>
+          <td>Option to increase the withdrawal once each year.</td>
+          <td>Optional, default Off</td>
+        </tr>
+        <tr>
+          <td>Inflation Rate</td>
+          <td>Yearly percentage increase in withdrawal when step-up is enabled.</td>
+          <td>0% to 15%, default 5%</td>
+        </tr>
+        <tr>
+          <td>Mode</td>
+          <td>Select whether to calculate corpus duration or balance at a target year.</td>
+          <td>Duration / Balance</td>
+        </tr>
+        <tr>
+          <td>Target Years</td>
+          <td>Applicable in Balance mode for year-based projection.</td>
+          <td>1 to 40 years, default 10 years</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>6. Output Model</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Main Outputs</h3>
+        <ul>
+          <li>Corpus lasts for X years and months.</li>
+          <li>Remaining corpus at selected target year.</li>
+          <li>Final balance at end of simulation.</li>
+          <li>Total withdrawn amount.</li>
+          <li>Total returns earned.</li>
+        </ul>
+      </div>
+      <div class="card tint">
+        <h3>Detailed Outputs</h3>
+        <ul>
+          <li>Year-wise start and end balance.</li>
+          <li>Annual withdrawals.</li>
+          <li>Annual returns earned.</li>
+          <li>Cumulative withdrawals.</li>
+          <li>Depletion-year marker in table and warning banner.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>7. Architecture</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Layer</th>
+          <th>Responsibility</th>
+          <th>Key Files</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>UI Layer</td>
+          <td>Displays the calculator, chart, stats, and supporting content.</td>
+          <td>`app/page.tsx`, `components/*`</td>
+        </tr>
+        <tr>
+          <td>State Layer</td>
+          <td>Stores calculator inputs and recomputes results when values change.</td>
+          <td>`hooks/useSWP.ts`</td>
+        </tr>
+        <tr>
+          <td>Logic Layer</td>
+          <td>Runs month-wise SWP simulation and number formatting.</td>
+          <td>`lib/swpCalc.ts`</td>
+        </tr>
+        <tr>
+          <td>Type Layer</td>
+          <td>Defines strongly typed inputs, outputs, and table rows.</td>
+          <td>`types/swp.ts`</td>
+        </tr>
+        <tr>
+          <td>Testing Layer</td>
+          <td>Verifies financial correctness and edge-case handling.</td>
+          <td>`__tests__/swpCalc.test.ts`</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pill-row">
+      <span class="pill">Next.js 16</span>
+      <span class="pill">React 19</span>
+      <span class="pill">TypeScript</span>
+      <span class="pill">Tailwind CSS 4</span>
+      <span class="pill">Chart.js</span>
+      <span class="pill">Jest</span>
+    </div>
+  </section>
+
+  <section class="page page-break">
+    <h2>8. Testing And Validation</h2>
+    <p>
+      The project includes a focused Jest test suite for the financial engine. Because the calculation logic is isolated from React components, behavior can be validated independently and repeatably.
+    </p>
+    <div class="grid-2">
+      <div class="card">
+        <h3>What Is Tested</h3>
+        <ul>
+          <li>Annual-to-monthly rate conversion</li>
+          <li>Month-one and month-two formula accuracy</li>
+          <li>Depletion detection and stop conditions</li>
+          <li>Inflation-based withdrawal step-up</li>
+          <li>Balance mode accuracy for target years</li>
+          <li>Totals and yearly-row aggregation</li>
+          <li>Zero-return and low-corpus edge cases</li>
+          <li>Known reference-value checks</li>
+        </ul>
+      </div>
+      <div class="card tint">
+        <h3>Why It Matters</h3>
+        <ul>
+          <li>Builds trust in financial outputs.</li>
+          <li>Reduces regression risk during UI changes.</li>
+          <li>Keeps the logic reusable for future extensions.</li>
+          <li>Supports hackathon demonstrations with defensible results.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>9. Strengths Of The Solution</h2>
+    <ul>
+      <li>Clean separation between presentation, state, and financial logic.</li>
+      <li>Fast feedback loop with instant updates as inputs change.</li>
+      <li>Educational framing with assumptions and disclaimer sections.</li>
+      <li>Accessible controls and clear warning states.</li>
+      <li>Suitable for demonstration, extension, and future production hardening.</li>
+    </ul>
+
+    <h2>10. Limitations</h2>
+    <ul>
+      <li>Uses a constant return assumption instead of variable market scenarios.</li>
+      <li>Does not account for taxes, fees, or exit loads.</li>
+      <li>Inflation is modeled as a simple yearly step-up rather than a dynamic curve.</li>
+      <li>Simulation horizon is capped at 40 years.</li>
+      <li>The current project emphasizes educational planning, not advisory decision-making.</li>
+    </ul>
+
+    <h2>11. Future Enhancements</h2>
+    <ul>
+      <li>Add scenario comparison with side-by-side plans.</li>
+      <li>Support SIP plus SWP combined retirement modeling.</li>
+      <li>Include tax-aware and fee-aware calculations.</li>
+      <li>Export results directly from the app.</li>
+      <li>Add Monte Carlo or variable-return simulations.</li>
+    </ul>
+
+    <h2>12. Conclusion</h2>
+    <p>
+      The SWP Calculator demonstrates a practical and well-structured approach to modeling systematic withdrawals. It combines a polished user interface with a testable financial engine, making it useful both as a project showcase and as an educational planning tool.
+    </p>
+
+    <div class="footer-note">
+      This project is for information and awareness purposes only. Actual investment outcomes depend on market conditions and many real-world factors that are not part of this simulation.
+    </div>
+    <p class="small" style="margin-top: 14px;">
+      Source files: `app/page.tsx`, `hooks/useSWP.ts`, `lib/swpCalc.ts`, `components/*`, `__tests__/swpCalc.test.ts`
+    </p>
+  </section>
+</body>
+</html>

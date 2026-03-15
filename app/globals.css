@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+/* ─── HDFC Brand Tokens ───────────────────────────── */
+:root {
+  --blue: #224c87;
+  --blue-light: #3a6dba;
+  --red: #da3832;
+  --grey: #919090;
+  --white: #ffffff;
+  --page-bg: #f0f4f9;
+  --background: var(--page-bg);
+  --foreground: #1e293b;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: "Montserrat", system-ui, sans-serif;
+}
+
+/* ─── Base Reset ──────────────────────────────────── */
+* {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Montserrat", Arial, Verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Focus Rings (Accessibility) ─────────────────── */
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─── Custom Range Slider ─────────────────────────── */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  background: linear-gradient(to right, var(--blue) 0%, #e2e8f0 0%);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--blue);
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(34, 76, 135, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 3px 12px rgba(34, 76, 135, 0.45);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--blue);
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(34, 76, 135, 0.35);
+  cursor: pointer;
+}
+
+/* ─── Scrollbar Styling ───────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ─── Animations ──────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
