@@ -5,7 +5,8 @@ An interactive Systematic Withdrawal Plan (SWP) calculator built with Next.js fo
 ## Working Video
 https://github.com/Anurag-M1/SWP-Calculator/blob/main/docs/SWP-Calculator-Demo.mov
 
-## Visual Preview
+## Live Preview 
+https://swp-calculator-omega.vercel.app
 
 ### Desktop View
 
