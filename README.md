@@ -2,11 +2,8 @@
 
 An interactive Systematic Withdrawal Plan (SWP) calculator built with Next.js for the FinCal Innovation Hackathon at Technex '26. The app helps users estimate how long an investment corpus can sustain monthly withdrawals, compare scenarios, and understand the trade-off between withdrawals, returns, and inflation.
 
-## Demo Video
+## Working Video
 
-[Watch the project demo video](docs/SWP-Calculator-Demo.mov)
-
-[![SWP Calculator Demo Preview](docs/assets/ui-desktop-default.png)](docs/SWP-Calculator-Demo.mov)
 
 ## Visual Preview
 
